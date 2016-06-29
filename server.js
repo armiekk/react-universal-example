@@ -22,9 +22,8 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from './webpack.dev';
 
 var app = express();
-
+const compiler = webpack(config);
 if (process.env.NODE_ENV === 'development') {
-  const compiler = webpack(config);
   app.use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
     stat: { colors: true }
@@ -72,7 +71,7 @@ const renderFullPage = (html, initialState) => {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
-        <script src="/bundle.js"></script>
+        <script src="${ process.env.NODE_ENV === 'production' ? '/bundle.js' : '/static/bundle.js' }"></script>
       </body>
     </html>
   `;

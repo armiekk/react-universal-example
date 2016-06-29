@@ -1,4 +1,5 @@
-FROM node:latest
+# FROM node:latest
+FROM mhart/alpine-node:latest
 
 # create app directory
 RUN mkdir -p /usr/src/app
