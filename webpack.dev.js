@@ -5,7 +5,7 @@ module.exports = {
   entry: [
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client',
-    './public/index'
+    './client/index'
   ],
   output: {
     path: __dirname + '/dist',

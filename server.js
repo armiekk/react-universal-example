@@ -10,10 +10,13 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
+import { match, RouterContext } from 'react-router';
+
+//routes
+import routes from './public/routes';
 
 //app
 import todoApp from './public/redux/reducers';
-import App from './public/components/App';
 
 //webpack settings
 import webpack from 'webpack';
@@ -44,19 +47,43 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 
 
-const handleRender = (req, res) => {
+const handleRender = (req, res, next) => {
 
-  const store = createStore(todoApp);
+  //
+  // var html = renderToString(
+  //   <Provider store={store}>
+  //     <App />
+  //   </Provider>
+  // );
+  //
+  // var initialState = store.getState();
+  //
+  // res.send(renderFullPage(html, initialState));
 
-  var html = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+    if (err) {
+      return res.status(500).end('page not found!');
+    }
+    if (redirectLocation) {
+      return res.redirect(302, redirectLocation.pathname, redirectLocation.search);
+    }
+    if (!renderProps) {
+      return next();
+    }
 
-  var initialState = store.getState();
+    const store = createStore(todoApp);
+    const initialState = store.getState();
 
-  res.send(renderFullPage(html, initialState));
+    const html = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    );
+
+    res.status(200).end(renderFullPage(html, initialState));
+
+  });
+
 }
 
 const renderFullPage = (html, initialState) => {
