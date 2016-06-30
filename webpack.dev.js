@@ -15,6 +15,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
+  target: 'web',
   module: {
     loaders: [
       {

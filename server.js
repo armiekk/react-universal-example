@@ -92,8 +92,9 @@ const renderFullPage = (html, initialState) => {
     <html>
       <head>
         <title>Todo List Example</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body>
+      <body style="margin: 0px;">
         <div id="root">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}

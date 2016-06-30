@@ -6,7 +6,9 @@ import todoApp from '../public/redux/reducers';
 import routes from '../public/routes';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
+injectTapEventPlugin();
 const initialState = window.__INITIAL_STATE__;
 const store = createStore(todoApp, initialState);
 const history = syncHistoryWithStore(browserHistory, store);
